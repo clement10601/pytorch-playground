@@ -43,7 +43,6 @@ class LeNet(nn.Module):
         num_features = 1
         for s in size:
             num_features *= s
-        print(num_features)
         return num_features
 
 net = LeNet()
