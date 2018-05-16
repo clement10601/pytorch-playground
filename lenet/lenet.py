@@ -7,7 +7,7 @@ class LeNet(nn.Module):
         super(LeNet, self).__init__()
         # 1 input image channel, 6 output channels, 5x5 square convolution
         # kernel
-        self.conv1 = nn.Conv2d(1, 6, 5, padding=2)
+        self.conv1 = nn.Conv2d(1, 6, 5)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.conv2_drop = nn.Dropout2d(p=0.2)
         self.bn1 = nn.BatchNorm2d(16)

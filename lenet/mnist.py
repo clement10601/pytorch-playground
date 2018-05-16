@@ -43,7 +43,7 @@ def test(args, model, device, test_loader):
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
-    parser.add_argument('--batch-size', type=int, default=32, metavar='N',
+    parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                         help='input batch size for testing (default: 1000)')
@@ -66,8 +66,8 @@ def main():
 
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    kwargs = {'num_workers': 2, 'pin_memory': True} if use_cuda else {}
-    trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+    kwargs = {'num_workers': 5 , 'pin_memory': True} if use_cuda else {}
+    trans = transforms.Compose([transforms.Resize((32, 32)), transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST('../data', train=True, download=True, transform=trans),
         batch_size=args.batch_size, shuffle=True, **kwargs)
