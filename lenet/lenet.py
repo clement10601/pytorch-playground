@@ -7,7 +7,7 @@ class LeNet(nn.Module):
         super(LeNet, self).__init__()
         # 1 input image channel, 6 output channels, 5x5 square convolution
         # kernel
-        self.conv1 = nn.Conv2d(1, 6, 5)
+        self.conv1 = nn.Conv2d(1, 6, 5, padding=2)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.conv2_drop = nn.Dropout2d(p=0.3)  
         # an affine operation: y = Wx + b
@@ -16,12 +16,17 @@ class LeNet(nn.Module):
         self.fc3 = nn.Linear(84, 10)
     
     def forward(self, x):
-        # Input (32, 32)
+        # Input (32, 32, 1)
         # conv1 => (28, 28, 6) => MaxPool(2, 2) => (14, 14, 6)
-        x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, (2, 2))
         # conv2 => (10, 10, 16) => MaxPool(2, 2) => (5, 5, 16)
         # x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)),2)) 
+        x = self.conv2(x)
+        # x = self.conv2_drop(x)
+        x = F.max_pool2d(x,2)
+        x = F.relu(x) 
         # Flatten (5*5*16)
         x = x.view(-1, self.num_flat_features(x))
         # fc1 => (1, 1, 120)
@@ -38,6 +43,7 @@ class LeNet(nn.Module):
         num_features = 1
         for s in size:
             num_features *= s
+        print(num_features)
         return num_features
 
 net = LeNet()
